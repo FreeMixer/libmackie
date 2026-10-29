@@ -1,0 +1,3 @@
+usr/include/mackie
+usr/lib/*/libmackie.so
+usr/lib/*/pkgconfig/libmackie.pc

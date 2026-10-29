@@ -1,0 +1,10 @@
+libmackie (0.1.0) unstable; urgency=medium
+
+  * First release: the Mackie Control codec ported from the TypeScript X-Touch
+    adapter, byte for byte: faders, buttons and lamps, V-Pots and rings, the jog
+    wheel, meters, scribble strips and backlights, the seven-segment displays,
+    the device reset and the host-connection handshake. Held to golden bytes
+    generated from the TypeScript encoders and to the handshake captured live
+    on an X-Touch.
+
+ -- Pau Aliagas <linuxnow@gmail.com>  Thu, 29 Oct 2026 22:00:00 +0100
