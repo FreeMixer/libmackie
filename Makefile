@@ -26,7 +26,7 @@ ABI     := $(shell sed -n 's/^\#define MACKIE_ABI  *\([0-9]*\)$$/\1/p' include/m
 
 OBJS := src/mackie_map.o src/mackie_text.o src/mackie_codec.o src/mackie_display.o src/mackie_sysex.o
 
-TESTS :=
+TESTS := tests/test_mcu
 
 RUN_TEST := tests/run-test.sh
 
@@ -41,6 +41,9 @@ src/%.o: src/%.c
 libmackie.a: $(OBJS)
 	$(AR) rcs $@ $(OBJS)
 
+tests/test_mcu: tests/test_mcu.c tests/check.h tests/golden/mcu_golden.h libmackie.a
+	$(CC) $(CFLAGS) $(WARN) $(INC) $< libmackie.a -o $@
+
 # ---- shared library (the packages) ---------------------------------------------------------
 # --no-undefined: a symbol nothing defines fails here, not at a consumer's link.
 SO := libmackie.so.$(VERSION)
@@ -52,6 +55,8 @@ $(SO): $(OBJS)
 
 shared: $(SO)
 
+test: $(TESTS)
+	$(RUN_TEST) tests/test_mcu
 
 clean:
 	rm -f $(OBJS) $(OBJS:.o=.d) libmackie.a libmackie.so* *.pc $(TESTS)
