@@ -61,9 +61,33 @@ shared: $(SO)
 test: $(TESTS)
 	$(RUN_TEST) tests/test_mcu
 	$(RUN_TEST) tests/test_golden
+	$(RUN_TEST) tests/test_install.sh
+	$(RUN_TEST) tests/conformance-packaging.sh
+
+# The pkg-config file is written at install time, from the install's own PREFIX and LIBDIR: a
+# file kept from an earlier build would name that build's directories.
+PCSED = sed -e 's|@PREFIX@|$(PREFIX)|' -e 's|@LIBDIR@|$(LIBDIR)|' -e 's|@INCDIR@|$(INCDIR)|' \
+	    -e 's|@VERSION@|$(VERSION)|'
+
+# What both installs carry: headers and the pkg-config file.
+install-common:
+	install -d $(DESTDIR)$(INCDIR)/mackie $(DESTDIR)$(PCDIR)
+	install -m 644 include/mackie/*.h $(DESTDIR)$(INCDIR)/mackie/
+	$(PCSED) packaging/libmackie.pc.in > $(DESTDIR)$(PCDIR)/libmackie.pc
+
+install: libmackie.a install-common
+	install -d $(DESTDIR)$(LIBDIR)
+	install -m 644 libmackie.a $(DESTDIR)$(LIBDIR)/
+
+# The packages: the shared library with its soname links.
+install-shared: shared install-common
+	install -d $(DESTDIR)$(LIBDIR)
+	install -m 755 $(SO) $(DESTDIR)$(LIBDIR)/
+	ln -sf $(SO) $(DESTDIR)$(LIBDIR)/libmackie.so.$(ABI)
+	ln -sf libmackie.so.$(ABI) $(DESTDIR)$(LIBDIR)/libmackie.so
 
 clean:
 	rm -f $(OBJS) $(OBJS:.o=.d) libmackie.a libmackie.so* *.pc $(TESTS)
 	rm -rf build
 
-.PHONY: all test shared clean
+.PHONY: all test shared install install-common install-shared clean

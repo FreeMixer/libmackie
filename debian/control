@@ -1,0 +1,30 @@
+Source: libmackie
+Section: libs
+Priority: optional
+Maintainer: Pau Aliagas <linuxnow@gmail.com>
+Build-Depends: debhelper-compat (= 13), git, pkgconf
+Standards-Version: 4.6.2
+Homepage: https://github.com/FreeMixer/libmackie
+Rules-Requires-Root: no
+
+Package: libmackie0
+Architecture: any
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Mackie Control (MCU) codec for motorised MIDI control surfaces
+ libmackie speaks Mackie Control (MCU), the MIDI protocol of motorised control
+ surfaces such as the Behringer X-Touch: motor faders, buttons and their lamps,
+ V-Pots and their LED rings, meters, the scribble strips and their backlights,
+ the seven-segment displays, the jog wheel and the host-connection handshake.
+ .
+ It is a codec and nothing else: pure functions over byte buffers, with no MIDI
+ port, no clock, no thread and no allocation.
+
+Package: libmackie-dev
+Section: libdevel
+Architecture: any
+Multi-Arch: same
+Depends: libmackie0 (= ${binary:Version}), ${misc:Depends}
+Description: Mackie Control (MCU) codec, development files
+ Headers and the pkg-config file libmackie, for building programs that drive a
+ Mackie Control surface.

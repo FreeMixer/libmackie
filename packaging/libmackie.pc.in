@@ -1,0 +1,9 @@
+prefix=@PREFIX@
+libdir=@LIBDIR@
+includedir=@INCDIR@
+
+Name: libmackie
+Description: Mackie Control (MCU) protocol codec for motorised MIDI control surfaces
+Version: @VERSION@
+Libs: -L${libdir} -lmackie
+Cflags: -I${includedir}
