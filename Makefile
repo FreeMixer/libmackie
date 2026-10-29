@@ -24,7 +24,8 @@ DESTDIR ?=
 VERSION := $(shell cat VERSION)
 ABI     := $(shell sed -n 's/^\#define MACKIE_ABI  *\([0-9]*\)$$/\1/p' include/mackie/mackie.h)
 
-OBJS := src/mackie_map.o src/mackie_text.o src/mackie_codec.o src/mackie_display.o src/mackie_sysex.o
+OBJS := src/mackie_map.o src/mackie_text.o src/mackie_codec.o src/mackie_display.o \
+	src/mackie_sysex.o
 
 TESTS := tests/test_mcu tests/test_golden
 
@@ -63,6 +64,9 @@ test: $(TESTS)
 	$(RUN_TEST) tests/test_golden
 	$(RUN_TEST) tests/test_install.sh
 	$(RUN_TEST) tests/conformance-packaging.sh
+	$(RUN_TEST) tests/test_workflows.sh
+	$(RUN_TEST) tests/public-sources-check.sh
+	$(RUN_TEST) tests/test_public_sources.sh
 
 # The pkg-config file is written at install time, from the install's own PREFIX and LIBDIR: a
 # file kept from an earlier build would name that build's directories.
