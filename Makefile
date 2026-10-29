@@ -24,7 +24,7 @@ DESTDIR ?=
 VERSION := $(shell cat VERSION)
 ABI     := $(shell sed -n 's/^\#define MACKIE_ABI  *\([0-9]*\)$$/\1/p' include/mackie/mackie.h)
 
-OBJS := src/mackie_map.o
+OBJS := src/mackie_map.o src/mackie_codec.o
 
 TESTS :=
 
