@@ -37,8 +37,8 @@ static int button(const uint8_t *msg, size_t len, struct mackie_button *b)
 /* ==== describe('MCU faders (pitch bend, 14-bit)') ========================================== */
 static void faders(void)
 {
-	struct mackie_msg m;
-	struct mackie_fader f;
+	struct mackie_msg m = { 0 };
+	struct mackie_fader f = { 0 };
 
 	/* encodes 0 and full scale to the pitch-bend extremes */
 	mackie_fader_encode(0, 0, &m);
@@ -69,8 +69,8 @@ static void faders(void)
 /* ==== describe('MCU buttons (notes)') ====================================================== */
 static void buttons(void)
 {
-	struct mackie_button b;
-	struct mackie_msg m;
+	struct mackie_button b = { 0 };
+	struct mackie_msg m = { 0 };
 	uint8_t note;
 
 	/* maps per-strip note bases to kind + strip */
@@ -126,8 +126,8 @@ static void buttons(void)
 /* ==== describe('MCU V-Pots (encoders)') ==================================================== */
 static void vpots(void)
 {
-	struct mackie_vpot v;
-	struct mackie_msg m;
+	struct mackie_vpot v = { 0 };
+	struct mackie_msg m = { 0 };
 
 	/* decodes clockwise + counter-clockwise relative ticks */
 	CHK(mackie_vpot_decode(MAP, (const uint8_t[]){ MACKIE_CONTROL_CHANGE, CC_VPOT_BASE + 1, 0x01 }, 3, &v) == MACKIE_OK);
@@ -158,7 +158,7 @@ static void vpots(void)
 /* ==== describe('MCU meters (channel pressure)') ============================================ */
 static void meters(void)
 {
-	struct mackie_msg m;
+	struct mackie_msg m = { 0 };
 
 	/* packs strip into the high nibble and level into the low */
 	mackie_meter_encode(3, 5, MACKIE_OVERLOAD_NONE, &m);
@@ -178,7 +178,7 @@ static void meters(void)
 /* ==== describe('MCU scribble strips (SysEx)') ============================================== */
 static void scribbles(void)
 {
-	struct mackie_msg m;
+	struct mackie_msg m = { 0 };
 
 	/* frames a write with the manufacturer + model + sub-command */
 	mackie_scribble_encode(0, "AB", MACKIE_MODEL_MCU, &m);
@@ -219,8 +219,8 @@ static const uint8_t OBSERVED_CONNECTION_QUERY[] = {
 
 static void handshake(void)
 {
-	struct mackie_msg m;
-	struct mackie_handshake hs;
+	struct mackie_msg m = { 0 };
+	struct mackie_handshake hs = { 0 };
 	uint8_t r[4];
 	char text[16];
 
@@ -276,7 +276,7 @@ static void handshake(void)
 static void scribble_colours(void)
 {
 	static const char *const names[] = { "off", "red", "green", "yellow", "blue", "magenta", "cyan", "white" };
-	struct mackie_msg m;
+	struct mackie_msg m = { 0 };
 
 	/* the eight surface colours, in wire order */
 	for (int i = 0; i < MACKIE_SCRIBBLE_COLOURS; i++)
@@ -303,7 +303,7 @@ static void scribble_colours(void)
 static void refusals(void)
 {
 	struct mackie_msg m, d[4];
-	struct mackie_button b;
+	struct mackie_button b = { 0 };
 	struct mackie_map twice = golden_map;
 	size_t n = 0;
 	char text[4];
