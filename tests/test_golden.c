@@ -243,7 +243,7 @@ static void decoders(void)
 			CHK(b.id == NULL);
 	}
 	for (size_t i = 0; i < N(golden_fader_dec); i++) {
-		struct mackie_fader fd;
+		struct mackie_fader fd = { 0 };
 		int rc = mackie_fader_decode(&golden_map, golden_fader_dec[i].msg, golden_fader_dec[i].len, &fd);
 		if (!golden_fader_dec[i].ok) {
 			CHK(rc == MACKIE_E_NOT_MINE);
@@ -255,7 +255,7 @@ static void decoders(void)
 		CHK(fd.position == golden_fader_dec[i].position);
 	}
 	for (size_t i = 0; i < N(golden_cc_dec); i++) {
-		struct mackie_vpot v;
+		struct mackie_vpot v = { 0 };
 		int delta = 0;
 		int rc = mackie_vpot_decode(&golden_map, golden_cc_dec[i].msg, golden_cc_dec[i].len, &v);
 		if (golden_cc_dec[i].vpot_ok)
@@ -269,7 +269,7 @@ static void decoders(void)
 			CHK(rc == MACKIE_E_NOT_MINE);
 	}
 	for (size_t i = 0; i < N(golden_handshake_dec); i++) {
-		struct mackie_handshake h;
+		struct mackie_handshake h = { 0 };
 		char text[32];
 		int rc = mackie_handshake_decode(golden_handshake_dec[i].msg, golden_handshake_dec[i].len,
 						 golden_handshake_dec[i].model, &h);
@@ -297,10 +297,10 @@ static void decoders(void)
 /* What the encoders send decodes back to what they were given. */
 static void back_again(void)
 {
-	struct mackie_msg m;
-	struct mackie_fader fd;
-	struct mackie_button b;
-	struct mackie_handshake h;
+	struct mackie_msg m = { 0 };
+	struct mackie_fader fd = { 0 };
+	struct mackie_button b = { 0 };
+	struct mackie_handshake h = { 0 };
 
 	/* every 14-bit value on every fader channel the map declares */
 	for (unsigned ch = 0; ch <= MACKIE_STRIPS; ch++)
@@ -312,7 +312,7 @@ static void back_again(void)
 				fails++;
 			}
 			/* and the position the decoder reports encodes to the same bytes */
-			struct mackie_msg again;
+			struct mackie_msg again = { 0 };
 			mackie_fader_encode(ch, fd.position, &again);
 			if (again.len != 3 || memcmp(again.bytes, m.bytes, 3)) {
 				fprintf(stderr, "FAIL fader ch %u value %u: its position does not encode back\n", ch, v);
@@ -371,8 +371,8 @@ static void back_again(void)
 /* The exchange captured on an X-Touch (fw V1.22, 2026-07-03), as the TypeScript passed it. */
 static void ground_truth(void)
 {
-	struct mackie_msg m;
-	struct mackie_handshake h;
+	struct mackie_msg m = { 0 };
+	struct mackie_handshake h = { 0 };
 	uint8_t r[4];
 	char text[16];
 
