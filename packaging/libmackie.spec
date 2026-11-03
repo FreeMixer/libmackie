@@ -24,6 +24,7 @@ libmackie speaks Mackie Control (MCU), the MIDI protocol of motorised control su
 as the Behringer X-Touch: motor faders, buttons and their lamps, V-Pots and their LED rings,
 meters, the scribble strips and their backlights, the seven-segment displays, the jog wheel
 and the host-connection handshake.
+Its documentation is on openmixer.org.
 
 It is a codec and nothing else: pure functions over byte buffers, with no MIDI port, no
 clock, no thread and no allocation. The host carries the bytes over whatever MIDI transport
@@ -36,6 +37,7 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %description devel
 Headers and the pkg-config file (libmackie) for building programs that drive a Mackie
 Control surface.
+Its documentation is on openmixer.org.
 
 %prep
 %autosetup -n %{name}-%{version}
@@ -52,12 +54,10 @@ make CFLAGS="%{optflags}" test
 
 %files
 %license LICENSE
-%doc README.md
 %{_libdir}/libmackie.so.%{version}
 %{_libdir}/libmackie.so.%{abi}
 
 %files devel
-%doc BUILDING.md
 %dir %{_includedir}/mackie
 %{_includedir}/mackie/*.h
 %{_libdir}/libmackie.so
