@@ -24,8 +24,6 @@ jobs:
             apt-get update && apt-get -y install --no-install-recommends gcc libc6-dev make git pkg-config ca-certificates python3-yaml
           fi
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0   # the public-sources gate reads every commit message
       - name: Trust the checkout
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
       - name: Build
@@ -49,3 +47,7 @@ jobs:
             sh -c 'cc consumer.c $(pkg-config --cflags --libs libmackie) -o consumer'
           ./consumer
 
+  # the checks every FreeMixer repository runs on what it publishes: commit messages, private references, and no
+  # local copy of either (FreeMixer/.github's public-sources-check)
+  public-sources:
+    uses: FreeMixer/.github/.github/workflows/public-sources-check.yml@v1
