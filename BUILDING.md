@@ -35,8 +35,13 @@ as SKIP, never as a pass.
   checks that what the encoders send decodes back to what they were given.
 - `test_install.sh` installs into a scratch root and builds a consumer through pkg-config;
   `conformance-packaging.sh` holds the version and soname copies to one another;
-  `test_workflows.sh` parses the CI workflows; `public-sources-check.sh` and its own test keep
-  private names out of the tree and the history.
+  `test_workflows.sh` parses the CI workflows.
+
+The checks on what this repository publishes, commit messages and private references, are
+FreeMixer/.github's, and CI runs them through its `public-sources-check` workflow; no copy is
+kept here. `make public-sources` runs the private-refs check from a checkout of FreeMixer/.github
+(`FREEMIXER_DOTGITHUB`, else `../freemixer-dotgithub`). The commit-msg hook in `.githooks` is the
+shared stub; enable it once per clone with `git config core.hooksPath .githooks`.
 
 ## The golden bytes
 
