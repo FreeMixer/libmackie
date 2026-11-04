@@ -19,6 +19,8 @@ Description: Mackie Control (MCU) codec for motorised MIDI control surfaces
  .
  It is a codec and nothing else: pure functions over byte buffers, with no MIDI
  port, no clock, no thread and no allocation.
+ .
+ Its documentation is on openmixer.org.
 
 Package: libmackie-dev
 Section: libdevel
@@ -28,3 +30,5 @@ Depends: libmackie0 (= ${binary:Version}), ${misc:Depends}
 Description: Mackie Control (MCU) codec, development files
  Headers and the pkg-config file libmackie, for building programs that drive a
  Mackie Control surface.
+ .
+ Its documentation is on openmixer.org.

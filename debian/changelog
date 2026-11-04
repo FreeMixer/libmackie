@@ -1,3 +1,13 @@
+libmackie (0.1.1) unstable; urgency=medium
+
+  * The packages install their licence and a short README and no other
+    markdown; their descriptions point to openmixer.org.
+  * The commit message and private reference checks run from the shared
+    FreeMixer/.github workflow; no copy is kept here (#4).
+  * No change to the library or its ABI.
+
+ -- Pau Aliagas <linuxnow@gmail.com>  Wed, 04 Nov 2026 18:00:00 +0100
+
 libmackie (0.1.0) unstable; urgency=medium
 
   * First release: the Mackie Control codec ported from the TypeScript X-Touch
