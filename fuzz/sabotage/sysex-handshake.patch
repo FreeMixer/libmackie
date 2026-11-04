@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_sysex.c:64 (`msg[3] != MACKIE_MANUFACTURER_2` becomes `0` at src/mackie_sysex.c:144).
+Caught by the seed input "other-manufacturer" of fuzz_sysex.
+
+diff --git a/src/mackie_sysex.c b/src/mackie_sysex.c
+index cc60500..094c116 100644
+--- a/src/mackie_sysex.c
++++ b/src/mackie_sysex.c
+@@ -141,7 +141,7 @@ int mackie_handshake_decode(const uint8_t *msg, size_t len, uint8_t model,
+ 	if (len < 6 || msg[0] != MACKIE_SYSEX_START || msg[len - 1] != MACKIE_SYSEX_END)
+ 		return MACKIE_E_NOT_MINE;
+ 	if (msg[1] != MACKIE_MANUFACTURER_0 || msg[2] != MACKIE_MANUFACTURER_1 ||
+-	    msg[3] != MACKIE_MANUFACTURER_2 || msg[4] != model)
++	    0 || msg[4] != model)
+ 		return MACKIE_E_NOT_MINE;
+ 	const uint8_t *body = msg + 6;
+ 	size_t blen = len > 7 ? len - 7 : 0;

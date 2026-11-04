@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_encode.c:110 (`state == MACKIE_LED_STATE_ON ? MACKIE_LED_ON` becomes `state == MACKIE_LED_STATE_ON ? MACKIE_LED_FLASH` at src/mackie_codec.c:119).
+Caught by the seed input "led-on" of fuzz_encode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..30cfa5c 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -116,7 +116,7 @@ int mackie_button_led_encode(unsigned note, enum mackie_led state, struct mackie
+ {
+ 	if (!out)
+ 		return MACKIE_E_ARG;
+-	unsigned v = state == MACKIE_LED_STATE_ON ? MACKIE_LED_ON
++	unsigned v = state == MACKIE_LED_STATE_ON ? MACKIE_LED_FLASH
+ 		   : state == MACKIE_LED_STATE_FLASH ? MACKIE_LED_FLASH : MACKIE_LED_OFF;
+ 	put3(out, MACKIE_NOTE_ON, note & 0x7f, v);
+ 	return MACKIE_OK;

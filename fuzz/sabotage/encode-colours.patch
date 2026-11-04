@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_encode.c:257 (`n != MACKIE_STRIPS` becomes `n < MACKIE_STRIPS` at src/mackie_sysex.c:111).
+Caught by the seed input "colours-nine" of fuzz_encode.
+
+diff --git a/src/mackie_sysex.c b/src/mackie_sysex.c
+index cc60500..66f5c24 100644
+--- a/src/mackie_sysex.c
++++ b/src/mackie_sysex.c
+@@ -108,7 +108,7 @@ int mackie_scribble_colours_encode(const unsigned *colours, size_t n, uint8_t mo
+ {
+ 	if (!out || (n && !colours))
+ 		return MACKIE_E_ARG;
+-	if (n != MACKIE_STRIPS)
++	if (n < MACKIE_STRIPS)
+ 		return MACKIE_E_RANGE;
+ 	for (size_t i = 0; i < n; i++)
+ 		if (colours[i] >= MACKIE_SCRIBBLE_COLOURS)

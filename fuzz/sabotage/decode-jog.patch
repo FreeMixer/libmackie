@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_decode.c:231 (`m->jog_cc < 0 || msg[1] != m->jog_cc` becomes `msg[1] != (uint8_t)m->jog_cc` at src/mackie_codec.c:175).
+Caught by the seed input "jog-none" of fuzz_decode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..08b8c21 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -172,7 +172,7 @@ int mackie_jog_decode(const struct mackie_map *m, const uint8_t *msg, size_t len
+ 		return MACKIE_E_ARG;
+ 	if (len < 3 || (msg[0] & 0xf0) != MACKIE_CONTROL_CHANGE)
+ 		return MACKIE_E_NOT_MINE;
+-	if (m->jog_cc < 0 || msg[1] != m->jog_cc)
++	if (msg[1] != (uint8_t)m->jog_cc)
+ 		return MACKIE_E_NOT_MINE;
+ 	*delta = relative(msg[2]);
+ 	return MACKIE_OK;

@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_encode.c:348 (`i < serial_len && i < MACKIE_SERIAL_LEN` becomes `i < serial_len` at src/mackie_sysex.c:193).
+Caught by the seed input "reply-long-serial" of fuzz_encode.
+
+diff --git a/src/mackie_sysex.c b/src/mackie_sysex.c
+index cc60500..a7e86c8 100644
+--- a/src/mackie_sysex.c
++++ b/src/mackie_sysex.c
+@@ -190,7 +190,7 @@ int mackie_host_connection_reply_encode(const uint8_t *serial, size_t serial_len
+ 	if (!out || (serial_len && !serial) || (response_len && !response))
+ 		return MACKIE_E_ARG;
+ 	head(out, model, MACKIE_HS_HOST_CONNECTION_REPLY);
+-	for (size_t i = 0; i < serial_len && i < MACKIE_SERIAL_LEN; i++)
++	for (size_t i = 0; i < serial_len; i++)
+ 		put(out, serial[i]);
+ 	for (size_t i = 0; i < response_len && i < MACKIE_CHALLENGE_LEN; i++)
+ 		put(out, response[i]);

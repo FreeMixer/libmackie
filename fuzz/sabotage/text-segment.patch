@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_text.c:224 (`c >= 'a' && c <= 'z'` becomes `c >= 'a' && c <= 'y'` at src/mackie_display.c:29).
+Caught by the seed input "segment-lower" of fuzz_text.
+
+diff --git a/src/mackie_display.c b/src/mackie_display.c
+index 0440d8a..54c0c22 100644
+--- a/src/mackie_display.c
++++ b/src/mackie_display.c
+@@ -26,7 +26,7 @@ int mackie_seven_segment_code(uint32_t cp)
+ {
+ 	uint32_t c = cp;
+ 
+-	if (c >= 'a' && c <= 'z')
++	if (c >= 'a' && c <= 'y')
+ 		c -= 0x20;
+ 	else if (c >= 0x80) {
+ 		c = 0;

@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_map.c:147 (`MACKIE_E_ARG` becomes `MACKIE_E_RANGE` at src/mackie_map.c:34).
+Caught by the seed input "map-keys-null" of fuzz_map.
+
+diff --git a/src/mackie_map.c b/src/mackie_map.c
+index dfe902f..c506501 100644
+--- a/src/mackie_map.c
++++ b/src/mackie_map.c
+@@ -31,7 +31,7 @@ int mackie_map_check(const struct mackie_map *m)
+ 	uint8_t seen[128] = { 0 };
+ 
+ 	if (!m || (m->n_keys && !m->keys))
+-		return MACKIE_E_ARG;
++		return MACKIE_E_RANGE;
+ 	for (unsigned b = 0; b < MACKIE_STRIP_BUTTONS; b++)
+ 		for (unsigned s = 0; s < MACKIE_STRIPS; s++)
+ 			if (!note_once(seen, m->strip_note[b][s]))
