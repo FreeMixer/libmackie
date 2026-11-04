@@ -65,8 +65,13 @@ test: $(TESTS)
 	$(RUN_TEST) tests/test_install.sh
 	$(RUN_TEST) tests/conformance-packaging.sh
 	$(RUN_TEST) tests/test_workflows.sh
-	$(RUN_TEST) tests/public-sources-check.sh
-	$(RUN_TEST) tests/test_public_sources.sh
+
+# No tracked file points into a private repository: FreeMixer/.github's private-refs check, from a checkout of
+# it (FREEMIXER_DOTGITHUB, else ../freemixer-dotgithub). CI runs it, with the commit message check, through the
+# public-sources-check workflow; the packages' builds do not, so `make test` does not either.
+FREEMIXER_DOTGITHUB ?= ../freemixer-dotgithub
+public-sources:
+	$(FREEMIXER_DOTGITHUB)/.github/actions/private-refs-check/check.sh .
 
 # The pkg-config file is written at install time, from the install's own PREFIX and LIBDIR: a
 # file kept from an earlier build would name that build's directories.
@@ -94,4 +99,4 @@ clean:
 	rm -f $(OBJS) $(OBJS:.o=.d) libmackie.a libmackie.so* *.pc $(TESTS)
 	rm -rf build
 
-.PHONY: all test shared install install-common install-shared clean
+.PHONY: all test public-sources shared install install-common install-shared clean
