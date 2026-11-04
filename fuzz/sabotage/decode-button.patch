@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_decode.c:101 (`len < 2` becomes `len < 3` at src/mackie_codec.c:102).
+Caught by the seed input "note-no-velocity" of fuzz_decode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..166a0c7 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -99,7 +99,7 @@ int mackie_button_decode(const struct mackie_map *m, const uint8_t *msg, size_t
+ 
+ 	if (!m || !out || (len && !msg) || (m->n_keys && !m->keys))
+ 		return MACKIE_E_ARG;
+-	if (len < 2)
++	if (len < 3)
+ 		return MACKIE_E_NOT_MINE;
+ 	unsigned type = msg[0] & 0xf0;
+ 	if (type != MACKIE_NOTE_ON && type != MACKIE_NOTE_OFF)

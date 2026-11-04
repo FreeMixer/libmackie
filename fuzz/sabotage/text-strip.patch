@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_text.c:119 (`row > 1` becomes `row > 2` at src/mackie_sysex.c:72).
+Caught by the seed input "strip-row-2" of fuzz_text.
+
+diff --git a/src/mackie_sysex.c b/src/mackie_sysex.c
+index cc60500..45a66d3 100644
+--- a/src/mackie_sysex.c
++++ b/src/mackie_sysex.c
+@@ -69,7 +69,7 @@ int mackie_strip_scribble_encode(unsigned strip, unsigned row, const char *text,
+ 
+ 	if (!text || !out)
+ 		return MACKIE_E_ARG;
+-	if (row > 1)
++	if (row > 2)
+ 		return MACKIE_E_RANGE;
+ 	/* cut to 7, pad with spaces to 7 */
+ 	size_t got = mackie_utf16_head(text, u, MACKIE_STRIP_CELL_CHARS);

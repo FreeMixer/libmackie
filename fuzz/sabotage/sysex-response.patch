@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_sysex.c:193 (`0x7fu &` becomes `` at src/mackie_sysex.c:171).
+Caught by the seed input "response-high" of fuzz_sysex.
+
+diff --git a/src/mackie_sysex.c b/src/mackie_sysex.c
+index cc60500..7a71732 100644
+--- a/src/mackie_sysex.c
++++ b/src/mackie_sysex.c
+@@ -168,7 +168,7 @@ void mackie_handshake_response(const uint8_t *challenge, size_t n,
+ 		c[i] = challenge[i];
+ 	/* in int, then reduced through unsigned: the low 7 bits of a two's-complement
+ 	 * difference, as JavaScript's 32-bit bitwise operators give them */
+-	response[0] = (uint8_t)(0x7fu & (unsigned)(c[0] + (c[1] ^ 0x0a) - c[3]));
++	response[0] = (uint8_t)((unsigned)(c[0] + (c[1] ^ 0x0a) - c[3]));
+ 	response[1] = (uint8_t)(0x7fu & (unsigned)((c[2] >> 4) ^ (c[0] + c[3])));
+ 	response[2] = (uint8_t)(0x7fu & (unsigned)((c[3] - (c[2] << 2)) ^ (c[0] | c[1])));
+ 	response[3] = (uint8_t)(0x7fu & (unsigned)(c[1] - c[2] + (0xf0 ^ (c[3] << 4))));

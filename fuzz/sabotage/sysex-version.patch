@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_sysex.c:128 (`h.sub != MACKIE_HS_VERSION_REPLY` becomes `0` at src/mackie_sysex.c:221).
+Caught by the seed input "version-query-reply" of fuzz_sysex.
+
+diff --git a/src/mackie_sysex.c b/src/mackie_sysex.c
+index cc60500..e05d2a8 100644
+--- a/src/mackie_sysex.c
++++ b/src/mackie_sysex.c
+@@ -218,7 +218,7 @@ int mackie_version_reply_decode(const uint8_t *msg, size_t len, uint8_t model, c
+ 	int rc = mackie_handshake_decode(msg, len, model, &h);
+ 	if (rc)
+ 		return rc;
+-	if (h.sub != MACKIE_HS_VERSION_REPLY)
++	if (0)
+ 		return MACKIE_E_NOT_MINE;
+ 	size_t n = len > 7 ? len - 7 : 0;
+ 	if (n + 1 > cap || n > 0x7fffffff)

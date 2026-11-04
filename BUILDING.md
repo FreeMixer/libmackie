@@ -43,6 +43,12 @@ kept here. `make public-sources` runs the private-refs check from a checkout of 
 (`FREEMIXER_DOTGITHUB`, else `../freemixer-dotgithub`). The commit-msg hook in `.githooks` is the
 shared stub; enable it once per clone with `git config core.hooksPath .githooks`.
 
+## Fuzzing
+
+`fuzz/README.md` describes the libFuzzer harnesses (clang, `make fuzz`, `make fuzz-run`) and the
+checks that hold them to their properties (`make fuzz-records`, `fuzz-sabotage`, `fuzz-coverage`).
+None of them is part of `make test`; `.github/workflows/fuzz.yml` runs them.
+
 ## The golden bytes
 
 `tests/golden/mcu_golden.h` is generated, and committed. To compare against a TypeScript MCU

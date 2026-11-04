@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_text.c:84 (`MACKIE_E_ARG` becomes `MACKIE_E_RANGE` at src/mackie_sysex.c:57).
+Caught by the seed input "scribble-null" of fuzz_text.
+
+diff --git a/src/mackie_sysex.c b/src/mackie_sysex.c
+index cc60500..51c0f8d 100644
+--- a/src/mackie_sysex.c
++++ b/src/mackie_sysex.c
+@@ -54,7 +54,7 @@ int mackie_scribble_encode(unsigned offset, const char *text, uint8_t model,
+ 	uint32_t c;
+ 
+ 	if (!text || !out)
+-		return MACKIE_E_ARG;
++		return MACKIE_E_RANGE;
+ 	while (n < LCD_CELLS && (c = mackie_utf8_next(&text)) != 0)
+ 		chars[n++] = c;
+ 	scribble(offset, chars, n, model, out);

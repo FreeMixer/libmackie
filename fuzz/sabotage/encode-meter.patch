@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_encode.c:211 (`(unsigned)overload > MACKIE_OVERLOAD_CLEAR` becomes `(unsigned)overload > MACKIE_OVERLOAD_CLEAR + 1` at src/mackie_codec.c:202).
+Caught by the seed input "meter-overload-3" of fuzz_encode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..0f778d7 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -199,7 +199,7 @@ int mackie_meter_encode(unsigned strip, double level, enum mackie_overload overl
+ {
+ 	unsigned nibble;
+ 
+-	if (!out || (unsigned)overload > MACKIE_OVERLOAD_CLEAR)
++	if (!out || (unsigned)overload > MACKIE_OVERLOAD_CLEAR + 1)
+ 		return MACKIE_E_ARG;
+ 	if (overload == MACKIE_OVERLOAD_SET)
+ 		nibble = 0x0e;

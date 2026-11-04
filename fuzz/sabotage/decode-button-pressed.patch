@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_decode.c:132 (`msg[2] > 0` becomes `msg[2] >= 0` at src/mackie_codec.c:110).
+Caught by the seed input "note-on-zero" of fuzz_decode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..2a7e2c9 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -107,7 +107,7 @@ int mackie_button_decode(const struct mackie_map *m, const uint8_t *msg, size_t
+ 	if (!lookup(m, msg[1], &b))
+ 		return MACKIE_E_NOT_MINE;
+ 	/* Note Off, or Note On with velocity 0, both mean "released". */
+-	b.pressed = type == MACKIE_NOTE_ON && len > 2 && msg[2] > 0;
++	b.pressed = type == MACKIE_NOTE_ON && len > 2 && msg[2] >= 0;
+ 	*out = b;
+ 	return MACKIE_OK;
+ }
