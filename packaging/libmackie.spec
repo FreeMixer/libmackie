@@ -54,10 +54,13 @@ make CFLAGS="%{optflags}" test
 
 %files
 %license LICENSE
+%doc README.md
 %{_libdir}/libmackie.so.%{version}
 %{_libdir}/libmackie.so.%{abi}
 
 %files devel
+%license LICENSE
+%doc README.md
 %dir %{_includedir}/mackie
 %{_includedir}/mackie/*.h
 %{_libdir}/libmackie.so
