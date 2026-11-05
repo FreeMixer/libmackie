@@ -2,7 +2,7 @@
 # libmackie, the Mackie Control (MCU) protocol of motorised MIDI control surfaces such as the
 # Behringer X-Touch, as a codec with no I/O.
 Name:           libmackie
-Version:        0.1.1
+Version:        0.1.2
 # The soname's major. rpm derives this package's provides and every consumer's requires from
 # it. It copies MACKIE_ABI of include/mackie/mackie.h, and tests/conformance-packaging.sh (in
 # make test) refuses a copy that disagrees.
@@ -67,6 +67,12 @@ make CFLAGS="%{optflags}" test
 %{_libdir}/pkgconfig/libmackie.pc
 
 %changelog
+* Thu Nov 05 2026 Pau Aliagas <linuxnow@gmail.com> - 0.1.2-1
+- The fuzz harnesses follow the OSS Verify build contract: every property
+  check names the one-line change that breaks it and the seed that catches
+  it.
+- No change to the library or its ABI.
+
 * Wed Nov 04 2026 Pau Aliagas <linuxnow@gmail.com> - 0.1.1-1
 - The packages install their licence and a short README and no other markdown.
 - The shared FreeMixer/.github checks; no copy is kept here (#4).

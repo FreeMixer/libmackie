@@ -37,7 +37,7 @@ extern "C" {
 #define MACKIE_VERSION_MAJOR  0
 #define MACKIE_VERSION_MINOR  1
 #define MACKIE_VERSION_PATCH  1
-#define MACKIE_VERSION_STRING "0.1.1"
+#define MACKIE_VERSION_STRING "0.1.2"
 /* The soname's major: libmackie.so.MACKIE_ABI. packaging/libmackie.spec and debian/ carry
  * copies; tests/conformance-packaging.sh holds them to it, and the version to the VERSION
  * file. */
