@@ -1,3 +1,12 @@
+libmackie (0.1.2) unstable; urgency=medium
+
+  * The fuzz harnesses follow the OSS Verify build contract: every property
+    check names the one-line change that breaks it and the seed that catches
+    it.
+  * No change to the library or its ABI.
+
+ -- Pau Aliagas <linuxnow@gmail.com>  Thu, 05 Nov 2026 12:00:00 +0100
+
 libmackie (0.1.1) unstable; urgency=medium
 
   * The packages install their licence and a short README and no other
