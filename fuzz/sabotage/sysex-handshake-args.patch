@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_sysex.c:108 (`MACKIE_E_ARG` becomes `MACKIE_E_RANGE` at src/mackie_sysex.c:139).
+Caught by the seed input "args-null" of fuzz_sysex.
+
+diff --git a/src/mackie_sysex.c b/src/mackie_sysex.c
+index cc60500..ed3f743 100644
+--- a/src/mackie_sysex.c
++++ b/src/mackie_sysex.c
+@@ -136,7 +136,7 @@ int mackie_handshake_decode(const uint8_t *msg, size_t len, uint8_t model,
+ 			    struct mackie_handshake *out)
+ {
+ 	if (!out || (len && !msg))
+-		return MACKIE_E_ARG;
++		return MACKIE_E_RANGE;
+ 	/* F0 00 00 66 model sub ... F7: the sub may be the F7 itself, with no body */
+ 	if (len < 6 || msg[0] != MACKIE_SYSEX_START || msg[len - 1] != MACKIE_SYSEX_END)
+ 		return MACKIE_E_NOT_MINE;

@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_decode.c:213 (`value & 0x40 ? -ticks : ticks` becomes `value & 0x20 ? -ticks : ticks` at src/mackie_codec.c:150).
+Caught by the seed input "vpot-ccw" of fuzz_decode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..95f19d9 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -147,7 +147,7 @@ int mackie_touch_note(const struct mackie_map *m, unsigned strip, uint8_t *note)
+ static int relative(unsigned value)
+ {
+ 	int ticks = (int)(value & 0x3f);
+-	return value & 0x40 ? -ticks : ticks;
++	return value & 0x20 ? -ticks : ticks;
+ }
+ 
+ int mackie_vpot_decode(const struct mackie_map *m, const uint8_t *msg, size_t len,

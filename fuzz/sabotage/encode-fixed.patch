@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_encode.c:314 (`head(out, model, MACKIE_HS_DEVICE_QUERY)` becomes `head(out, model, MACKIE_HS_HOST_CONNECTION_QUERY)` at src/mackie_sysex.c:181).
+Caught by the seed input "fixed" of fuzz_encode.
+
+diff --git a/src/mackie_sysex.c b/src/mackie_sysex.c
+index cc60500..d1ac547 100644
+--- a/src/mackie_sysex.c
++++ b/src/mackie_sysex.c
+@@ -178,7 +178,7 @@ int mackie_device_query_encode(uint8_t model, struct mackie_msg *out)
+ {
+ 	if (!out)
+ 		return MACKIE_E_ARG;
+-	head(out, model, MACKIE_HS_DEVICE_QUERY);
++	head(out, model, MACKIE_HS_HOST_CONNECTION_QUERY);
+ 	put(out, MACKIE_SYSEX_END);
+ 	return MACKIE_OK;
+ }

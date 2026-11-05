@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_text.c:209 (`m->assignment_cc + 1 - i` becomes `m->assignment_cc - i` at src/mackie_display.c:88).
+Caught by the seed input "assignment-text" of fuzz_text.
+
+diff --git a/src/mackie_display.c b/src/mackie_display.c
+index 0440d8a..62d6883 100644
+--- a/src/mackie_display.c
++++ b/src/mackie_display.c
+@@ -85,7 +85,7 @@ int mackie_assignment_encode(const struct mackie_map *m, const char *text,
+ 	mackie_utf16_head(text, u, 2);
+ 	for (unsigned i = 0; i < 2; i++) {
+ 		out[i].bytes[0] = MACKIE_CONTROL_CHANGE;
+-		out[i].bytes[1] = (uint8_t)(m->assignment_cc + 1 - i);
++		out[i].bytes[1] = (uint8_t)(m->assignment_cc - i);
+ 		out[i].bytes[2] = (uint8_t)mackie_seven_segment_code(u[i]);
+ 		out[i].len = 3;
+ 	}

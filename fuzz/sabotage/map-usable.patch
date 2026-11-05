@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_map.c:206 (`m->ring_cc[encoder] & 0x7f` becomes `m->ring_cc[encoder] | 0x80` at src/mackie_codec.c:191).
+Caught by the seed input "map-display-edge" of fuzz_map.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..6ae5190 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -188,7 +188,7 @@ int mackie_ring_encode(const struct mackie_map *m, unsigned encoder, double posi
+ 	double p = position < 0 ? 0 : position > 11 ? 11 : position;
+ 	unsigned pos = mackie_round_nonneg(p);
+ 	unsigned data = (center ? 0x40u : 0) | ((unsigned)mode << 4) | pos;
+-	put3(out, MACKIE_CONTROL_CHANGE, m->ring_cc[encoder] & 0x7f, data & 0x7f);
++	put3(out, MACKIE_CONTROL_CHANGE, m->ring_cc[encoder] | 0x80, data & 0x7f);
+ 	return MACKIE_OK;
+ }
+ 

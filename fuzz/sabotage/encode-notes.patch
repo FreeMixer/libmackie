@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_encode.c:136 (`m->strip_note[button][strip]` becomes `m->strip_note[button][strip ^ 1]` at src/mackie_codec.c:132).
+Caught by the seed input "note-strip-3" of fuzz_encode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..9e39e79 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -129,7 +129,7 @@ int mackie_strip_note(const struct mackie_map *m, enum mackie_strip_button butto
+ 		return MACKIE_E_ARG;
+ 	if ((unsigned)button >= MACKIE_STRIP_BUTTONS || strip >= MACKIE_STRIPS)
+ 		return MACKIE_E_RANGE;
+-	*note = m->strip_note[button][strip];
++	*note = m->strip_note[button][strip ^ 1];
+ 	return MACKIE_OK;
+ }
+ 

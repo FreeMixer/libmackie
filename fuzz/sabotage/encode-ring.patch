@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_encode.c:170 (`(unsigned)mode > MACKIE_RING_SPREAD` becomes `(unsigned)mode > MACKIE_RING_SPREAD + 1` at src/mackie_codec.c:184).
+Caught by the seed input "ring-mode-4" of fuzz_encode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..15bd7dc 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -181,7 +181,7 @@ int mackie_jog_decode(const struct mackie_map *m, const uint8_t *msg, size_t len
+ int mackie_ring_encode(const struct mackie_map *m, unsigned encoder, double position,
+ 		       enum mackie_ring_mode mode, int center, struct mackie_msg *out)
+ {
+-	if (!m || !out || (unsigned)mode > MACKIE_RING_SPREAD)
++	if (!m || !out || (unsigned)mode > MACKIE_RING_SPREAD + 1)
+ 		return MACKIE_E_ARG;
+ 	if (encoder >= MACKIE_STRIPS)
+ 		return MACKIE_E_RANGE;

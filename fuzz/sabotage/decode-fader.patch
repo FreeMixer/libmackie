@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_decode.c:151 (`(msg[0] & 0xf0) != MACKIE_PITCH_BEND` becomes `0` at src/mackie_codec.c:43).
+Caught by the seed input "note-off" of fuzz_decode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..a412167 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -40,7 +40,7 @@ int mackie_fader_decode(const struct mackie_map *m, const uint8_t *msg, size_t l
+ {
+ 	if (!m || !out || (len && !msg))
+ 		return MACKIE_E_ARG;
+-	if (len < 1 || (msg[0] & 0xf0) != MACKIE_PITCH_BEND)
++	if (len < 1 || 0)
+ 		return MACKIE_E_NOT_MINE;
+ 	if (!(m->fader_channels & (1u << (msg[0] & 0x0f))))
+ 		return MACKIE_E_NOT_MINE;

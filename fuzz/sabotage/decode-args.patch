@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_decode.c:266 (`MACKIE_E_ARG` becomes `MACKIE_E_RANGE` at src/mackie_codec.c:42).
+Caught by the seed input "args" of fuzz_decode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..52ddf9b 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -39,7 +39,7 @@ int mackie_fader_decode(const struct mackie_map *m, const uint8_t *msg, size_t l
+ 			struct mackie_fader *out)
+ {
+ 	if (!m || !out || (len && !msg))
+-		return MACKIE_E_ARG;
++		return MACKIE_E_RANGE;
+ 	if (len < 1 || (msg[0] & 0xf0) != MACKIE_PITCH_BEND)
+ 		return MACKIE_E_NOT_MINE;
+ 	if (!(m->fader_channels & (1u << (msg[0] & 0x0f))))

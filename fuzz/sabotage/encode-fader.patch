@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_encode.c:68 (`position < 0 ? 0 : position > 1 ? 1 : position` becomes `position < 0 ? 0 : position` at src/mackie_codec.c:32).
+Caught by the seed input "fader-over" of fuzz_encode.
+
+diff --git a/src/mackie_codec.c b/src/mackie_codec.c
+index 8adccf5..484757a 100644
+--- a/src/mackie_codec.c
++++ b/src/mackie_codec.c
+@@ -29,7 +29,7 @@ int mackie_fader_encode14(unsigned channel, unsigned value, struct mackie_msg *o
+ int mackie_fader_encode(unsigned channel, double position, struct mackie_msg *out)
+ {
+ 	/* clamp into [0, 1]; NaN fails both tests and stays NaN, which the wire sends as 0 */
+-	double p = position < 0 ? 0 : position > 1 ? 1 : position;
++	double p = position < 0 ? 0 : position;
+ 	unsigned value = mackie_round_nonneg(p * MACKIE_PITCHBEND_MAX);
+ 
+ 	return mackie_fader_encode14(channel, value, out);

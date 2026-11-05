@@ -1,0 +1,16 @@
+Breaks the check of fuzz/fuzz_map.c:239 (`"value out of range"` becomes `"value out of bounds"` at src/mackie_map.c:14).
+Caught by the seed input "strerror-range" of fuzz_map.
+
+diff --git a/src/mackie_map.c b/src/mackie_map.c
+index dfe902f..a2a9ceb 100644
+--- a/src/mackie_map.c
++++ b/src/mackie_map.c
+@@ -11,7 +11,7 @@ const char *mackie_strerror(int code)
+ 	case MACKIE_OK:         return "ok";
+ 	case MACKIE_E_ARG:      return "invalid argument";
+ 	case MACKIE_E_SPACE:    return "output buffer too small";
+-	case MACKIE_E_RANGE:    return "value out of range";
++	case MACKIE_E_RANGE:    return "value out of bounds";
+ 	case MACKIE_E_NOT_MINE: return "message of another kind";
+ 	default:                return "unknown error";
+ 	}
